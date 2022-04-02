@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const userSchema = mongoose.Scema({
+const userSchema = mongoose.Schema({
     name: {
         type: String,
         maxLength: 50
