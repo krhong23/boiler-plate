@@ -43,6 +43,8 @@ userSchema.pre('save', function (next) {
                 next()
             })
         })
+    } else {
+        next()
     }
 })
 const User = mongoose.model('User', userSchema)
