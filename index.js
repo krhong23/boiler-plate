@@ -23,8 +23,8 @@ app.get('/', (req, res) => {
 
 app.post('/register', (req, res) => {
     // Client에서 회원 가입 시 필요한 정보들을 가져와서 데이터베이스에 저장
-
     const user = new User(req.body)
+    // bcrypt로 암호화
     user.save((err, userInfo) => {
         if (err) return res.json({success: false, err})
         return res.status(200).json({
