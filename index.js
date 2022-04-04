@@ -4,6 +4,7 @@ const port = 5001
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const config = require("./config/key")
+const {auth} = require("./middeleware/auth");
 const {User} = require("./models/User")
 
 // application/x-www-form-urlencoded
@@ -16,7 +17,6 @@ app.use(cookieParser());
 
 // Mongo DB Connection
 const mongoose = require('mongoose')
-const e = require("express");
 mongoose.connect(config.mongoURI).then(() => console.log('MongoDB Connected..'))
     .catch(err => console.log(err))
 
@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
-app.post('/register', (req, res) => {
+app.post('/api/users/register', (req, res) => {
     // Client에서 회원 가입 시 필요한 정보들을 가져와서 데이터베이스에 저장
     const user = new User(req.body)
     // bcrypt로 암호화
@@ -36,7 +36,7 @@ app.post('/register', (req, res) => {
     })
 })
 
-app.post('/login', (req, res) => {
+app.post('/api/users/login', (req, res) => {
     // 요청된 email을 데이터베이스에서 찾는다.
     User.findOne({email: req.body.email}, (err, user) => {
         if (!user) {
@@ -65,6 +65,20 @@ app.post('/login', (req, res) => {
 
     })
 })
+
+app.get('/api/users/auth', auth, (req, res) => {
+    res.status(200).json({
+        _id: req.user._id,
+        isAdmin: req.user.role === 0 ? false : true,
+        isAuth: true,
+        email: req.user.email,
+        name: req.user.name,
+        lastname: req.user.lastname,
+        role: req.user.role,
+        image: req.user.image
+    })
+})
+
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })

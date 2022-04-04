@@ -8,6 +8,10 @@ const userSchema = mongoose.Schema({
         type: String,
         maxLength: 50
     },
+    lastname: {
+        type: String,
+        maxLength: 50
+    },
     email: {
         type: String,
         trim: true,
@@ -19,7 +23,7 @@ const userSchema = mongoose.Schema({
     },
     role: {
         type: Number,
-        default: 0
+        default: 0 // 0-> 일반사용자, 1-> 관리자
     },
     image: String,
     token: {
@@ -64,6 +68,19 @@ userSchema.methods.generateToken = function (cb) {
         if (err) return cb(err)
         cb(null, user)
     })
+}
+
+userSchema.statics.findByToken = function (token, cb) {
+    var user = this;
+
+    // 토큰을 복호화한다.
+    jwt.verify(token, 'secretToken', function (err, decoded) {
+        // User 아이디를 이용해서 User를 찾은 후 클라이언트에서 가져온 Token과 DB에 저장된 Token 과 일치하는지 확인
+        user.findOne({"_id": decoded, "token": token}, function (err, user) {
+            if (err) return cb(err);
+            cb(null, user)
+        })
+    });
 }
 
 const User = mongoose.model('User', userSchema)
