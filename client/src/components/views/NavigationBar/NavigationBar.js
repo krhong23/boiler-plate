@@ -1,15 +1,11 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-class NavBar extends Component {
-    render() {
-        return (
-            <div>
-                Navigation Bar
-            </div>
-        );
-    }
+function NavBar() {
+    return (
+        <div>
+            Navigation Bar
+        </div>
+    );
 }
-
-NavBar.propTypes = {};
 
 export default NavBar;

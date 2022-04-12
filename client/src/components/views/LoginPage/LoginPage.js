@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {useDispatch} from "react-redux";
 import {loginUser} from "../../../actions/user_action";
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
-function LoginPage() {
+function LoginPage(props) {
 
     const dispatch = useDispatch();
-const navigate = useNavigate();
+    const navigate = useNavigate();
     // define state
     const [Email, setEmail] = useState("")
     const [Password, setPassword] = useState("")
@@ -19,7 +19,7 @@ const navigate = useNavigate();
         setPassword(event.currentTarget.value)
     }
 
-    const onsubmitHandler = (event) => {
+    const onSubmitHandler = (event) => {
         // page가 refresh 되는 것을 방지
         event.preventDefault();
 
@@ -41,7 +41,7 @@ const navigate = useNavigate();
     return (
         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100vh'}}>
             <form style={{display: 'flex', flexDirection: 'column'}}
-                  onSubmit={onsubmitHandler}
+                  onSubmit={onSubmitHandler}
             >
                 <label>Email</label>
                 <input type='email' value={Email} onChange={onEmailHandler}/>
